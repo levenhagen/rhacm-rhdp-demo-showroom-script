@@ -1,0 +1,27 @@
+= Prerequisites
+:navtitle: Prerequisites
+
+- First things first, let's apply a configuration to our cluster to increase the number of allowed pods.
+
+[source,yaml]
+----
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: set-max-pods 
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/master: "" 
+  kubeletConfig:
+    podsPerCore: 10 
+    maxPods: 500
+----
+
+Secondly, to proceed successfully, make sure you have the following artifacts:
+
+- A SSH keys (public and private).
+- An OpenShift pull-secret.
+
+NOTE: if you don't have these handy, don't sweat -- Either the demo instructions will help you get one or your facilitator can get you one too.
+

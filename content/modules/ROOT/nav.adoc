@@ -1,19 +1,23 @@
 * xref:index.adoc[Introduction to the RHACM Demo]
+* xref:prerequisites.adoc[Prerequisites]
 
-.Cluster Lifecycle 
+
+.1. Cluster Lifecycle 
 * xref:intro-cluster-lifecycle.adoc[Introduction to Cluster Lifecycle]
 * xref:clc-credentials.adoc[Creating credentials]
+* xref:create-cluster-aws.adoc[Creating clusters on AWS]
 
-.Application Lifecycle 
+
+.2. Application Lifecycle 
 * xref:intro-app-lifecycle.adoc[Introduction to Application Lifecycle]
 
-.Governance
+.3. Governance
 * xref:intro-governance.adoc[Introduction to Governance]
 
-.MultiCluster Observability
+.4. MultiCluster Observability
 * xref:intro-observability.adoc[Introduction to Observability]
 
-.Business Continuity
+.5.Business Continuity
 * xref:intro-business-continuity.adoc[Introduction to Business Contitnuity]
 
 .Template Pages

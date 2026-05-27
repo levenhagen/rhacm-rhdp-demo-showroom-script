@@ -1,25 +1,33 @@
 = Introduction to RHACM Demo - Welcome 👋
 :navtitle: Introduction to RHACM Demo
 
-RHACM is a web-based lab instruction platform for the https://demo.redhat.com[Red Hat Demo Platform].
-It combines rendered AsciiDoc content with embedded terminals, consoles, and interactive tools -- giving workshop and demo participants everything they need in a single browser tab.
+https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management] (RHACM) is Red Hat's enterprise software solution that allows IT teams to centrally manage, monitor, and scale fleets of Kubernetes and OpenShift clusters across data centers, cloud providers (like AWS, Azure, GCP), and edge environments from a single console. 
+This demo covers the five major use cases for Red Hat Advanced Cluster Management for Kubernetes: multicluster lifecycle, policy-driven governance, advanced application lifecycle, multicluster observability, and business continuity. 
 
 == What Users See
 
-//TODO
+In this demo, you'll be provided with: 
 
-== Key Concepts
+* A Single-node OpenShift Cluster running the latest version of RHACM.
+* A bastion machine with access to the ACM Hub cluster.
+* An AWS Open Environment for executing some demo steps.
 
-//TODO
+Some operations will require actions within the RHACM UI.
+Others will require commands via the CLI.
+Some may be doable in both ways. 
+The demo steps will provided what's best suited for each case, and that means for each step/section, users might either see a embedded terminal tab, or an embedded OpenShift console page.
 
 == Where to Start
 
-//TODO
+After reading the introduction page carefully, make sure you understood the demo environment features, and please proceed to the next section below: *Prerequisite 👇*.
 
-== Related Projects
+IMPORTANT: Please make sure that you read all of the information before starting the demo. 
 
-* https://github.com/agnosticd/showroom[agnosticd.showroom collection] -- this Ansible collection (you are here).
-* https://github.com/rhpds/showroom_template_nookbag[showroom_template_nookbag] -- the recommended content repo template.
-* https://github.com/rhpds/showroom-deployer[showroom-deployer] -- Helm charts that power OCP deployments.
-* https://github.com/rhpds/showroom-images[showroom-images] -- container images (content server, terminals, Antora, etc.).
-* https://github.com/rhpds/nookbag[nookbag] -- the zero-touch UI bundle.
+If you have any questions or face any issues, please talk to your facilitator or get in touch with the RHACM team: mail-to:acm-contact@redhat.com
+
+== Related/Helpful Links
+
+* https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16[RHACM 2.16 Docs] -- Red Hat Advanced Cluster Management 2.16 full documentation (latest)
+* https://access.redhat.com/articles/7136928[RHACM 2.16 Support Matrix] -- the Support Matrix provides general support guidance for different platforms and releases. E.g. "Can RHACM manage AKS?" 
+* https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqcKOKT4c0uGkBt3YSRQ9S5v[RHACM YouTube Playlist] -- Official RHACM Youtube playlist
+* more to come...

@@ -1,0 +1,45 @@
+= Creating clusters on AWS
+:navtitle: Creating clusters on AWS
+
+With credentials in place, we're ready to provision clusters.
+
+Using the RHACM UI, let's now create 2(two) clusters: 
+
+* Cluster 1, containing a standard node count: 3 control plane nodes, and 3 worker/compute nodes.
+* Cluster 2, a Single-node OpenShift(SNO) cluster.
+
+== Creating the clusters via RHACM Console
+
+In RHACM, on the left tab, navigate to *Infrastructure -> Clusters*.
+Click on *Create cluster*.
+Select *Amazon Web Services*, and then *Standalone*.
+
+Fill the form/wizard as follows:
+
+[cols="2,2,2",options="header"]
+|===
+|Attribute |Value |Section 
+
+|`Infrastructure provider credential`
+|`aws`
+|1. Cluster details
+
+|`Name`
+|`cluster1`
+|1. Cluster details
+
+|`Release Image`
+|Select a 4.21 image.
+|1. Cluster details
+
+|`Label`
+|`environment=prod`
+|1. Cluster details
+
+|`Region`
+|`us-east-2`
+|2. Node pools
+
+|===
+
+To be continued...
