@@ -1,7 +1,23 @@
-* xref:index.adoc[What is Showroom?]
+* xref:index.adoc[Introduction to the RHACM Demo]
 
-.Content Developer Guide
-* xref:quick-start.adoc[Quick Start]
+.Cluster Lifecycle 
+* xref:intro-cluster-lifecycle.adoc[Introduction to Cluster Lifecycle]
+* xref:clc-credentials.adoc[Creating credentials]
+
+.Application Lifecycle 
+* xref:intro-app-lifecycle.adoc[Introduction to Application Lifecycle]
+
+.Governance
+* xref:intro-governance.adoc[Introduction to Governance]
+
+.MultiCluster Observability
+* xref:intro-observability.adoc[Introduction to Observability]
+
+.Business Continuity
+* xref:intro-business-continuity.adoc[Introduction to Business Contitnuity]
+
+.Template Pages
+* xref:quick-start.adoc[** Quick Start **]
 * xref:content-repo.adoc[Creating a Content Repository]
 * xref:agnosticv-config.adoc[AgnosticV Configuration]
 * xref:ui-config.adoc[UI Configuration]
@@ -9,9 +25,7 @@
 * xref:attribute-example.adoc[Attribute Injection Example]
 * xref:ocp4-role-reference.adoc[OCP4 Role Reference]
 * xref:vm-role-reference.adoc[VM Role Reference]
-
-.Showroom Developer Guide
-* xref:architecture.adoc[Architecture]
+* xref:architecture.adoc[** Architecture **]
 * xref:deployer.adoc[Showroom Deployer]
 * xref:images.adoc[Showroom Images]
 * xref:nookbag.adoc[Nookbag UI]

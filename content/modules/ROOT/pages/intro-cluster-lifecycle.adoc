@@ -1,0 +1,48 @@
+= Cluster Lifecycle
+:navtitle: Cluster Lifecycle
+
+This section walks you through the Cluster Lifecycle concepts and module in RHACM.
+Read and follow the instructions carefully.
+
+At the end of this module, you will have:
+
+* Achieved a good level of understanding the Cluster Lifecycle concepts.
+* Deployed 2 new managed clusters.
+
+== What is Cluster Lifecycle?
+
+At a high level, in the Kubernetes world, Cluster lifecycle management encompasses the sequential phases of creating, registering/importing, upgrading, scaling and decommissioning/destroying clusters.
+In this RHACM demo, we will showcase how to manage all of that in a multicloud environment.
+
+* Watch and save the https://www.youtube.com/watch?v=k_m_WqQNdpo[RHACM Cluster Lifecycle video] for an quick overview and future reference.
+
+video::k_m_WqQNdpo[youtube,width=800,height=450]
+
+== Architecture
+
+RHACM works using a hub-spoke model. The hub-spoke model is a centralized architectural design where the hub is connected to multiple peripheral clusters, the spokes.
+For the most part, the hub does not act directly on the managed clusters, but the other way around: the managed clusters report status and read/pull data from the hub.
+
+Have a look the https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-network-configuration[RHACM Docs] to learn more about the necessary networking requirements for the communication between hub and managed clusters.
+
+The RHACM hub-spoke architecture is based on the https://open-cluster-management.io/docs/concepts/architecture/[Open Cluster Management] open source project: 
+Open Cluster Management is a sandbox CNCF project(currently going through the incubation submission).
+
+
+=== Draw me a picture
+
+image::https://raw.githubusercontent.com/open-cluster-management-io/OCM/main/assets/ocm-arch.png[OCM Hub-Spoke Architecture]
+
+Now, *let's get to work*! 
+
+Apply `rhacm.yaml`:
+
+[source,yaml,subs="+attributes"]
+----
+rhacm_demo:
+  hands_on:
+    - enabled: yes
+      mode: hard
+----
+
+Please, proceed to the next section. 🙂

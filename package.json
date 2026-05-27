@@ -1,0 +1,10 @@
+{
+  "name": "showroom-template-demo",
+  "version": "1.0.0",
+  "description": "Showroom Template Demo",
+  "private": true,
+  "dependencies": {
+    "@sntke/antora-mermaid-extension": "latest",
+    "@andrew-jones/antora-tabs-extension": "latest"
+  }
+}
