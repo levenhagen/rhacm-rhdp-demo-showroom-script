@@ -8,7 +8,7 @@ Using the RHACM UI, let's now create 2(two) clusters:
 * Cluster 1, containing a standard node count: 3 control plane nodes, and 3 worker/compute nodes.
 * Cluster 2, a Single-node OpenShift(SNO) cluster.
 
-== Creating the clusters via RHACM Console
+== Creating the first cluster(cluster1) via RHACM Console
 
 In RHACM, on the left tab, navigate to *Infrastructure -> Clusters*.
 Click on *Create cluster*.
@@ -29,7 +29,7 @@ Fill the form/wizard as follows:
 |1. Cluster details
 
 |`Release Image`
-|Select a 4.21 image.
+|Select a 4.21 image. (Or whatever is newest)
 |1. Cluster details
 
 |`Label`
@@ -42,4 +42,57 @@ Fill the form/wizard as follows:
 
 |===
 
-To be continued...
+image::clc-region.png[AWS Region]
+
+Leave everything else as is(default) and then click *NEXT* on the following sections or select *7 - Review and create* and then click *CREATE*.
+
+image::clc-cluster1-review.png[Cluster1 review]
+
+In about 45 minutes the new cluster will be ready to go!  
+
+image::clc-cluster-creating.png[Cluster1 creating]
+
+== Creating the second cluster(cluster2) via RHACM Console
+
+Now, do the same steps again, for cluster2. The steps will be very similar, excepting for a few minor changes.
+
+[cols="2,2,2",options="header"]
+|===
+|Attribute |Value |Section 
+
+|`Infrastructure provider credential`
+|`aws`
+|1. Cluster details
+
+|`Name`
+|`cluster2`
+|1. Cluster details
+
+|`Release Image`
+|Select a 4.21 image. (Or whatever is newest)
+|1. Cluster details
+
+|`Label`
+|`environment=qa`
+|1. Cluster details
+
+|`Region`
+|`us-west-2`
+|2. Node pools
+
+|===
+
+In the *2. Node Pools section*, click on Worker Pool 1 and change the Node count to 0.
+
+image::clc-sno-worker-pool.png[Cluster2 Worker pool]
+
+Proceed with everything else as is and while at final step, *before* proceeding turn *YAML: ON*
+Click on “install-config” in the YAML window pane and change the master replica number to 1 (will likely be 3).  Double check that the worker replica is 0.
+
+image::clc-sno-review.png[Cluster2 review]
+
+Click on *CREATE.*
+
+NOTE: Please note that the deployments might fail. If so please retry at a different regions/availability zones, we have a very limited amount of elastic IP addresses in these accounts.
+
+
