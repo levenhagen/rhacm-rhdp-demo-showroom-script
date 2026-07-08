@@ -1,47 +1,19 @@
 = App Lifecycle
 :navtitle: App Lifecycle
 
-This page walks you through the Application Lifecycle module in RHACM.
+In the previous lab, you explored the Cluster Lifecycle functionality in RHACM. This allowed you to register/import an OpenShift® cluster to RHACM, which you can now use to deploy applications.
+
+This module will walk you through the Application Lifecycle functionality in RHACM.
 Read and follow the instructions carefully.
 At the end of this module, you'll have deployed the GitOps operator and 1 new application.
 
 == Before You Begin
 
-You will need:
+Some clarifications:
 
-* A content repository with your Antora lab instructions (or a fork of the https://github.com/rhpds/showroom_template_nookbag[template]).
-See xref:content-repo.adoc[] if you have not created one yet.
-* Access to the https://github.com/rhpds/agnosticv[agnosticv] repository to create or edit a catalog item.
-* Familiarity with YAML and basic Ansible concepts.
+* The Governance module is a prerequesite to this module, as it provides a controlled and automated deployment of the the OpenShift GitOps operator, based on https://argo-cd.readthedocs.io/en/stable/[ArgoCD]. If you haven't gone through the Governance module yet, please do it or feel free to install the OpenShift GitOps operator manually via the OpenShift Software catalog.
+* RHACM offers 3 different integratopm approaches for GitOps integration: Push model, Pull model, and Agent model. Each pattern has its own usecases and benefits, but in this demo, we will focus on the push model. 
 
-== Path A -- OpenShift 4 Workload
+== Integrating RHACM and GitOps
 
-Use this path when your lab provisions an OpenShift cluster and Showroom runs as a pod on that cluster.
-
-=== 1. Add the collection to your catalog item
-
-In your catalog item's `common.yaml`, declare the Showroom collection as a dependency:
-
-[source,yaml,subs="+attributes"]
-----
-requirements_content:
-  collections:
-    - name: https://github.com/agnosticd/showroom.git
-      type: git
-      version: {showroom-collection-version}
-----
-
-=== 2. List the workloads
-
-Add the Showroom workload to your workloads list.
-Showroom should come **last** so that all infrastructure and credentials are available:
-
-[source,yaml]
-----
-workloads:
-  - ocp4_workload_my_operators        # your infra workloads first
-  - agnosticd.showroom.ocp4_workload_showroom
-----
-
-If you want the OpenShift web console embedded as an iframe tab, add `ocp4_workload_ocp_console_embed` before the main Showroom workload.
-See xref:ocp-integration.adoc[].
+With the GitOps operator installed, we now need to make sure ArgoCD clusters inventory is synced with RHACM clusters inventory, so users can leverage the integration and deploy application to the fleet of clusters.

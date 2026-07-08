@@ -8,7 +8,9 @@ Using the RHACM UI, let's now create 2(two) clusters:
 * Cluster 1, containing a standard node count: 3 control plane nodes, and 3 worker/compute nodes.
 * Cluster 2, a Single-node OpenShift(SNO) cluster.
 
-== Creating the first cluster(cluster1) via RHACM Console
+== Creating the clusters via RHACM Console
+
+=== 1. Creating the first cluster: *cluster1*
 
 In RHACM, on the left tab, navigate to *Infrastructure -> Clusters*.
 Click on *Create cluster*.
@@ -52,7 +54,7 @@ In about 45 minutes the new cluster will be ready to go!
 
 image::clc-cluster-creating.png[Cluster1 creating]
 
-== Creating the second cluster(cluster2) via RHACM Console
+=== 2. Creating the second cluster: *cluster2*
 
 Now, do the same steps again, for cluster2. The steps will be very similar, excepting for a few minor changes.
 
@@ -86,7 +88,8 @@ In the *2. Node Pools section*, click on Worker Pool 1 and change the Node count
 
 image::clc-sno-worker-pool.png[Cluster2 Worker pool]
 
-Proceed with everything else as is and while at final step, *before* proceeding turn *YAML: ON*
+Proceed with everything else as is and while at final step, *before* proceeding turn *YAML: ON*.
+
 Click on “install-config” in the YAML window pane and change the master replica number to 1 (will likely be 3).  Double check that the worker replica is 0.
 
 image::clc-sno-review.png[Cluster2 review]
