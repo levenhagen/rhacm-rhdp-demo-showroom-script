@@ -155,5 +155,5 @@ Charts are versioned and released via GitHub Actions:
 == Further Reading
 
 * https://github.com/rhpds/showroom-deployer[Source repository]
-* xref:architecture.adoc[] -- how the deployer fits into the overall system.
-* xref:images.adoc[] -- the container images used by the chart.
+* xref:tmp-architecture.adoc[] -- how the deployer fits into the overall system.
+* xref:tmp-images.adoc[] -- the container images used by the chart.

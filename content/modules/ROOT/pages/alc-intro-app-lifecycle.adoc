@@ -1,8 +1,6 @@
 = App Lifecycle
 :navtitle: App Lifecycle
 
-In the previous lab, you explored the Cluster Lifecycle functionality in RHACM. This allowed you to register/import an OpenShift® cluster to RHACM, which you can now use to deploy applications.
-
 This module will walk you through the Application Lifecycle functionality in RHACM.
 Read and follow the instructions carefully.
 At the end of this module, you'll have deployed the GitOps operator and 1 new application.

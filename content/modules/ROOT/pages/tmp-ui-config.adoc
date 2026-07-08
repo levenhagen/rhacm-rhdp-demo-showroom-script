@@ -242,5 +242,5 @@ __meta__:
 
 == Next Steps
 
-* xref:content-repo.adoc[] -- learn about the overall content repo structure.
-* xref:ocp-integration.adoc[] -- set up OCP console embedding for the console tab.
+* xref:tmp-content-repo.adoc[] -- learn about the overall content repo structure.
+* xref:tmp-ocp-integration.adoc[] -- set up OCP console embedding for the console tab.

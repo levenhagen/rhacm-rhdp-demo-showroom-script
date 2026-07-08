@@ -384,7 +384,7 @@ The role creates one namespace, pod, and route per user:
 * `showroom-<guid>-user2.apps.cluster.example.com`
 
 Each user's Showroom instance receives the merged global + per-user data as Antora attributes.
-See xref:user-data.adoc[] for details.
+See xref:tmp-user-data.adoc[] for details.
 
 == Examples
 

@@ -45,7 +45,7 @@ your-content-repo/
 <7> Reusable AsciiDoc snippets you can include inline.
 <8> Antora playbook -- do not modify; uses the Red Hat theme and extension settings managed by the template.
 <9> Showroom UI configuration -- defines tabs, layout width, and dynamic URLs.
-See xref:ui-config.adoc[].
+See xref:tmp-ui-config.adoc[].
 
 == The Antora Component Descriptor (`antora.yml`)
 
@@ -85,10 +85,10 @@ SSH to the bastion:
 And the rendered page will show the actual username and hostname for each lab participant.
 
 The full list of available attributes depends on what your infrastructure roles write into `user_data`.
-See xref:user-data.adoc[] for the complete flow.
+See xref:tmp-user-data.adoc[] for the complete flow.
 
 TIP: Provide sensible defaults in `antora.yml` so the content renders correctly during local development and in CI previews.
-See the xref:attribute-example.adoc[] page for a live demonstration of attribute injection.
+See the xref:tmp-attribute-example.adoc[] page for a live demonstration of attribute injection.
 
 == Antora Playbook (`site.yml`)
 
@@ -155,7 +155,7 @@ It is a development-time aid and must not be visible to end users in production.
 TIP: The working examples in `tests/showroom-ocp4/dev.yaml` and `tests/showroom-vm/dev.yaml` in agnosticv both enable dev mode -- use them as a reference.
 
 You can also expose dev mode as a catalog parameter so it can be toggled from the demo.redhat.com order form.
-See xref:ocp4-role-reference.adoc#_dev_mode[OCP4 Dev Mode] or xref:vm-role-reference.adoc#_dev_mode[VM Dev Mode] for the full variable reference and catalog parameter examples.
+See xref:tmp-ocp4-role-reference.adoc#_dev_mode[OCP4 Dev Mode] or xref:tmp-vm-role-reference.adoc#_dev_mode[VM Dev Mode] for the full variable reference and catalog parameter examples.
 
 === In local development
 
@@ -612,7 +612,7 @@ tabs:
     secondary_port: 443
 ----
 
-See xref:ui-config.adoc#_two_terminals_stacked[Two Terminals (Stacked)] for the full configuration reference.
+See xref:tmp-ui-config.adoc#_two_terminals_stacked[Two Terminals (Stacked)] for the full configuration reference.
 
 When a split tab is active, the execute roles let you target a specific half:
 
@@ -753,6 +753,6 @@ See the https://github.com/rhpds/rhdp-skills-marketplace[RHDP Skills Marketplace
 
 == Next Steps
 
-* xref:ui-config.adoc[] -- configure the tab layout, terminal tabs, and embedded consoles.
-* xref:agnosticv-config.adoc[] -- wire your content repo into an AgnosticV catalog item.
-* xref:user-data.adoc[] -- understand how runtime variables become AsciiDoc attributes.
+* xref:tmp-ui-config.adoc[] -- configure the tab layout, terminal tabs, and embedded consoles.
+* xref:tmp-agnosticv-config.adoc[] -- wire your content repo into an AgnosticV catalog item.
+* xref:tmp-user-data.adoc[] -- understand how runtime variables become AsciiDoc attributes.

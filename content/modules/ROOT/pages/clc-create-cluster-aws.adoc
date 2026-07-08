@@ -54,9 +54,9 @@ In about 45 minutes the new cluster will be ready to go!
 
 image::clc-cluster-creating.png[Cluster1 creating]
 
-=== 2. Creating the second cluster: *cluster2*
+=== 2. Creating the second cluster: *cluster2-sno*
 
-Now, do the same steps again, for cluster2. The steps will be very similar, excepting for a few minor changes.
+Now, do the same steps again, for cluster2-sno. The steps will be very similar, excepting for a few minor changes.
 
 [cols="2,2,2",options="header"]
 |===
@@ -67,7 +67,7 @@ Now, do the same steps again, for cluster2. The steps will be very similar, exce
 |1. Cluster details
 
 |`Name`
-|`cluster2`
+|`cluster2-sno`
 |1. Cluster details
 
 |`Release Image`
@@ -86,13 +86,13 @@ Now, do the same steps again, for cluster2. The steps will be very similar, exce
 
 In the *2. Node Pools section*, click on Worker Pool 1 and change the Node count to 0.
 
-image::clc-sno-worker-pool.png[Cluster2 Worker pool]
+image::clc-sno-worker-pool.png[cluster2-sno Worker pool]
 
 Proceed with everything else as is and while at final step, *before* proceeding turn *YAML: ON*.
 
 Click on “install-config” in the YAML window pane and change the master replica number to 1 (will likely be 3).  Double check that the worker replica is 0.
 
-image::clc-sno-review.png[Cluster2 review]
+image::clc-sno-review.png[cluster2-sno review]
 
 Click on *CREATE.*
 

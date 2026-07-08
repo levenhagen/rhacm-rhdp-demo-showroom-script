@@ -9,7 +9,7 @@ Pick the track that matches your environment type.
 You will need:
 
 * A content repository with your Antora lab instructions (or a fork of the https://github.com/rhpds/showroom_template_nookbag[template]).
-See xref:content-repo.adoc[] if you have not created one yet.
+See xref:tmp-content-repo.adoc[] if you have not created one yet.
 * Access to the https://github.com/rhpds/agnosticv[agnosticv] repository to create or edit a catalog item.
 * Familiarity with YAML and basic Ansible concepts.
 
@@ -43,7 +43,7 @@ workloads:
 ----
 
 If you want the OpenShift web console embedded as an iframe tab, add `ocp4_workload_ocp_console_embed` before the main Showroom workload.
-See xref:ocp-integration.adoc[].
+See xref:tmp-ocp-integration.adoc[].
 
 === 3. Point to your content repo
 
@@ -65,7 +65,7 @@ ocp4_workload_showroom_enable_dev_mode: true
 IMPORTANT: Always set this in `dev.yaml`, *never* in `common.yaml` or `prod.yaml`.
 Dev mode is a development-time aid -- it should not be visible to end users.
 
-See xref:content-repo.adoc#_dev_mode[Dev Mode] for details on what it provides.
+See xref:tmp-content-repo.adoc#_dev_mode[Dev Mode] for details on what it provides.
 
 === 5. Pin the version for production
 
@@ -157,7 +157,7 @@ showroom_enable_dev_mode: true
 IMPORTANT: Always set this in `dev.yaml`, *never* in `common.yaml` or `prod.yaml`.
 Dev mode is a development-time aid -- it should not be visible to end users.
 
-See xref:content-repo.adoc#_dev_mode[Dev Mode] for details on what it provides.
+See xref:tmp-content-repo.adoc#_dev_mode[Dev Mode] for details on what it provides.
 
 === 7. Pin the version for production
 
@@ -175,6 +175,6 @@ It deploys Showroom on a bastion VM with two terminals and the `vm-example` bran
 
 == Next Steps
 
-* xref:content-repo.adoc[] -- learn how to structure your content repo, configure Antora, and develop locally.
-* xref:agnosticv-config.adoc[] -- deeper coverage of AgnosticV wiring, real-world examples, and common patterns.
-* xref:user-data.adoc[] -- understand how runtime variables flow into your AsciiDoc content.
+* xref:tmp-content-repo.adoc[] -- learn how to structure your content repo, configure Antora, and develop locally.
+* xref:tmp-agnosticv-config.adoc[] -- deeper coverage of AgnosticV wiring, real-world examples, and common patterns.
+* xref:tmp-user-data.adoc[] -- understand how runtime variables flow into your AsciiDoc content.

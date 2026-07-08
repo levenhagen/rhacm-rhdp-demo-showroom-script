@@ -96,5 +96,5 @@ workloads:
 
 == Further Reading
 
-* xref:ui-config.adoc[] -- configure the OCP Console tab.
-* xref:ocp4-role-reference.adoc[] -- the main Showroom OCP4 role.
+* xref:tmp-ui-config.adoc[] -- configure the OCP Console tab.
+* xref:tmp-ocp4-role-reference.adoc[] -- the main Showroom OCP4 role.

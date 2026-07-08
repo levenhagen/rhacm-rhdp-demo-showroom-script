@@ -1,0 +1,112 @@
+= Creating Policies
+:navtitle: Creating Policies
+
+This section walks you through how to create policies via the RHACM UI.
+Read and follow the instructions carefully.
+
+== Before you begin
+
+A little setup... clusterSets.
+
+On the left bar, navigate to *Clusters* menu, and access the *ClusterSets* tab.
+
+You'll see 2 clusterSets: `global` and `default`.
+
+NOTE: A *ClusterSet* is a group of managed clusters. It allows admins to group clusters and help manage access to all of your managed clusters. Read more https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/clusters/cluster_mce_overview#managedclustersets-intro[here]. 
+
+In the clusterSets page, click on the 3-dots button on the right, and then on *Edit namespaces bindings* and add the *default* namespace.
+
+image::gov-clustersets.png[ClusterSets]
+
+image::gov-namespace-binding.png[Namespace Bindings]
+
+Ok, here's what you did and why this is important for policies: 
+
+This will create a *ManagedClusterSetBinding*, connecting the `global` ClusterSet and the default namespace. In other words, this will allow policies created in the *default* namespace to be applied to clusters in the `global` clusterSet. If you create a policy in any other namespace, it will not be able to reach any managed cluster.
+
+In the screenshot above and in the RHACM documentation, you'll find a more extensive explanation about the resource.
+
+== Creating an Certificate Policy 
+
+Access Governance menu on the left bar, click on the *policies* tab, and then click on *Create policy*. 
+
+Build a policy with the following information:
+
+* *Name*: policy-cert
+* *Namespace*: default
+
+image::gov-create-policy.png[Create policy UI]
+
+Click *NEXT*.
+
+On 2. Policy Templates: Click on *Add policy template* and select *Certificate Management expiration* (at the top).
+
+image::gov-policy-templates.png[Certificate policy template]
+
+Click *NEXT*.
+
+On Placement, click on *New placement*.
+Select *global* as the clusterSet.
+
+Leave everything else as default and click *NEXT*.
+
+Finally, in the Review page, you'll see this policy will be applied to every OpenShift cluster in the `global` ClusterSet, and it will look for expired certificates in them. If there’s a certificate that is set to expire in less time than the `minimumDuration` specification, the policy will inform a non-compliant status.
+
+Click *SUBMIT*.
+
+Please note that initially it will complain that there is an issue with the policy but shortly after should display a green check mark ✅ meaning the policy is compliant in all clusters.
+
+image::gov-policy-review.png[Policy review]
+
+== Creating an Operator Policy - OpenShift GitOps
+
+Now, after your first policy, let's try another use-case and create policy which will declaratively install and manage the OpenShift GitOps operator. The OpenShift GitOps operator, based on ArgoCD, is an operator that provides GitOps capabilities and integrates with RHACM. This operator will be used later in the course, more specifically, in the Application Lifecycle module.
+
+Still in the Governance menu, click again on *Create Policy*.
+
+=== 1. Provide a name, description and namespace for the policy
+
+Complete the fields with the following information:
+
+* *Name*: install-gitops-operator
+* *Description*: This policy installs the OpenShift GitOps operator on the Hub Cluster.
+* *Namespace*: open-cluster-management-global-set
+
+Click *NEXT*.
+
+=== 2. Select the pre-built Operator Policy
+
+On 2.Policy Templates: Click on *Add policy template* and select *Install an Operator*.
+
+Complete the fields with the following information:
+
+*Operator Policy*:
+
+* *Name*: install-operator
+* *Installed Namespace*: openshift-gitops-operator
+
+*Subscription*:
+
+* *Name*: openshift-gitops-operator
+* *Channel*: latest
+* *StartingCSV*: openshift-gitops-operator.v1.20.1
+
+It should resemble something like this:
+
+image:gov-policy-gitops-op.png[GitOps Operator Policy]
+
+For everything other field, leave it as is. Click *Next*.
+
+=== 3. Define policy placement 
+
+In *3. Placement*, under label expressions, select: `local-cluster` -> In -> `true`. This means the OpenShift GitOps operator will only be applied to the local-cluster/Hub Cluster.
+
+image::gov-policy-gitops-placement.png[GitOps Policy placement]
+
+Click Next, Next and Submit. Shortly, the policy should report ✅ and the GitOps operator should be installed. 
+
+image::gov-policy-gitops-result.png[GitOps Policy result]
+
+If eveything went sucessfully, in a few moments, OpenShift GitOps will be installed.
+
+Feel free to further explore and play around by creating more policies. 

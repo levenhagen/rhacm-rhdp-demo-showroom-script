@@ -212,10 +212,10 @@ The container images used by Showroom are built from the https://github.com/rhpd
 |Traefik reverse proxy (VM deployments).
 |===
 
-See xref:images.adoc[] for the full image catalog and release process.
+See xref:tmp-images.adoc[] for the full image catalog and release process.
 
 == Next Steps
 
-* xref:deployer.adoc[] -- deep dive into the Helm charts.
-* xref:images.adoc[] -- image catalog and how to build/release.
-* xref:nookbag.adoc[] -- the zero-touch UI bundle.
+* xref:tmp-deployer.adoc[] -- deep dive into the Helm charts.
+* xref:tmp-images.adoc[] -- image catalog and how to build/release.
+* xref:tmp-nookbag.adoc[] -- the zero-touch UI bundle.

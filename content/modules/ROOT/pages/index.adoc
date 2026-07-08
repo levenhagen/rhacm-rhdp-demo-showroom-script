@@ -19,15 +19,22 @@ The demo steps will provided what's best suited for each case, and that means fo
 
 == Where to Start
 
-After reading the introduction page carefully, make sure you understood the demo environment features, and please proceed to the next section below: *Prerequisite 👇*.
+After reading the introduction page carefully, make sure you understood the demo environment features, and please proceed to the next section below: *Prerequisites 👇*.
 
 IMPORTANT: Please make sure that you read all of the information before starting the demo. 
 
-If you have any questions or face any issues, please talk to your facilitator or get in touch with the RHACM team: mail-to:acm-contact@redhat.com
+If you have any questions or face any issues, please talk to your facilitator or get in touch with the RHACM team: mail-to:acm-contact@redhat.com[acm-contact@redhat.com]
 
 == Related/Helpful Links
 
-* https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16[RHACM 2.16 Docs] -- Red Hat Advanced Cluster Management 2.16 full documentation (latest)
-* https://access.redhat.com/articles/7136928[RHACM 2.16 Support Matrix] -- the Support Matrix provides general support guidance for different platforms and releases. E.g. "Can RHACM manage AKS?" 
+* https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17[RHACM 2.17 Docs] -- Red Hat Advanced Cluster Management 2.17 full documentation (latest)
+* https://access.redhat.com/articles/7142379[RHACM 2.17 Support Matrix] -- the Support Matrix provides general support guidance for different platforms and releases. E.g. "Can RHACM manage AKS?" 
 * https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqcKOKT4c0uGkBt3YSRQ9S5v[RHACM YouTube Playlist] -- Official RHACM Youtube playlist
-* more to come...
+* more to come soon...
+
+== Foundational Concepts/Glossary
+
+* `Hub Cluster`: Also sometimes called the management cluster, is the OpenShift cluster in which RHACM is installed. The Hub cluster manages all managed clusters.
+* `Managed Cluster`: Any kubernetes cluster that is registered to and is being managed by a RHACM Hub cluster.
+* `OpenShift Cluster`: Essentially, a OpenShift instance. After you install OpenShift in a machine, or using multiple compute machines(also called nodes), you have an OpenShift cluster.
+* `RHACM Console`: a.k.a, the RHACM web-based User Interface. 

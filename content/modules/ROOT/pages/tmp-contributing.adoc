@@ -80,7 +80,7 @@ These test items expose the `showroom_collection_version` as a catalog parameter
 
 . Fork and clone https://github.com/agnosticd/showroom[agnosticd/showroom].
 . Make changes to roles, defaults, tasks, or templates.
-. Test locally using a standalone playbook if possible (see xref:ocp4-role-reference.adoc[OCP4 examples] or xref:vm-role-reference.adoc[VM examples]).
+. Test locally using a standalone playbook if possible (see xref:tmp-ocp4-role-reference.adoc[OCP4 examples] or xref:tmp-vm-role-reference.adoc[VM examples]).
 . Test on the platform using the test catalog items.
 . Open a pull request.
 
@@ -88,7 +88,7 @@ These test items expose the `showroom_collection_version` as a catalog parameter
 
 . Fork and clone https://github.com/rhpds/showroom_template_nookbag[showroom_template_nookbag].
 . Create a new branch (the test catalog items can point to any branch).
-. Test locally with Podman (see xref:content-repo.adoc[]).
+. Test locally with Podman (see xref:tmp-content-repo.adoc[]).
 . Test on the platform by updating the test catalog item's content ref.
 
 === Helm chart changes

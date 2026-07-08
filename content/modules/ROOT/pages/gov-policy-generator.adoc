@@ -1,0 +1,38 @@
+= Policy Generator
+:navtitle: Policy Generator
+
+While the RHACM UI offers a great way to get started and create policies, some advanced use cases might require some additional steps and capabilities.
+In this section, we'll introduce Policy Generator - a utility to help automate the creation of RHACM policies.
+
+Read and follow the instructions carefully.
+
+== Before you begin
+
+Setup... clusterSets.
+
+== Creating an Certificate Policy 
+
+Navigate to the Governance screen and click *Create policy*. 
+
+Build a policy with the following information:
+
+* Name: policy-cert
+* Namespace: default
+
+Click *NEXT*.
+
+Policy Templates: Click on *Add policy template* and select *Certificate Management expiration*.
+
+Click *NEXT*.
+
+On Placement, click on *New placement*.
+Select *global* as the clusterSet.
+
+Leave everything else as default and click *NEXT*.
+
+
+== Creating an Operator Policy - OpenShift GitOps
+
+Right now, let's create a policy which will declaratively install and manage the OpenShift GitOps operator. The OpenShift GitOps operator, based on ArgoCD, is an operator that provides GitOps capabilities and integrates with RHACM. This operator will be used later in the course, more specifically, in the Application Lifecycle module.
+
+=== 1. Creating the policy

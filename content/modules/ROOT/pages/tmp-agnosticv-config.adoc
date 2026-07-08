@@ -33,7 +33,7 @@ workloads:
   - agnosticd.showroom.ocp4_workload_ocp_console_embed  # <1>
   - agnosticd.showroom.ocp4_workload_showroom            # <2>
 ----
-<1> Optional -- enables OCP console embedding in Showroom iframes. See xref:ocp-integration.adoc[].
+<1> Optional -- enables OCP console embedding in Showroom iframes. See xref:tmp-ocp-integration.adoc[].
 <2> The main Showroom deployment. Must be last.
 
 === VM Deployments
@@ -226,7 +226,7 @@ showroom_enable_dev_mode: true
 ----
 |===
 +
-See xref:content-repo.adoc#_dev_mode[Dev Mode] for what it provides and xref:ocp4-role-reference.adoc#_dev_mode[OCP4] / xref:vm-role-reference.adoc#_dev_mode[VM] role references for the full variable list.
+See xref:tmp-content-repo.adoc#_dev_mode[Dev Mode] for what it provides and xref:tmp-ocp4-role-reference.adoc#_dev_mode[OCP4] / xref:tmp-vm-role-reference.adoc#_dev_mode[VM] role references for the full variable list.
 
 Exposing catalog parameters for development::
 Make the collection version and dev-mode overridable from the catalog order form:
@@ -264,6 +264,6 @@ propagate_provision_data:
 
 == Next Steps
 
-* xref:ocp4-role-reference.adoc[] -- full variable reference for OCP4 deployments.
-* xref:vm-role-reference.adoc[] -- full variable reference for VM deployments.
-* xref:user-data.adoc[] -- how provisioning data reaches your content.
+* xref:tmp-ocp4-role-reference.adoc[] -- full variable reference for OCP4 deployments.
+* xref:tmp-vm-role-reference.adoc[] -- full variable reference for VM deployments.
+* xref:tmp-user-data.adoc[] -- how provisioning data reaches your content.

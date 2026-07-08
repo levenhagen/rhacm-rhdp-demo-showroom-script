@@ -195,9 +195,9 @@ These attributes are commonly available in `user_data` depending on your environ
 |===
 
 The exact set of available attributes depends on which infrastructure roles run before Showroom.
-Enable dev-mode (see xref:content-repo.adoc[]) to see all attributes available in your deployed environment.
+Enable dev-mode (see xref:tmp-content-repo.adoc[]) to see all attributes available in your deployed environment.
 
 == Next Steps
 
-* xref:ui-config.adoc[] -- configure tabs, layout, and dynamic URLs.
-* xref:content-repo.adoc[] -- structure your content repo and use attributes effectively.
+* xref:tmp-ui-config.adoc[] -- configure tabs, layout, and dynamic URLs.
+* xref:tmp-content-repo.adoc[] -- structure your content repo and use attributes effectively.

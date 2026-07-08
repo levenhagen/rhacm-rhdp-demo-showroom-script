@@ -115,5 +115,5 @@ The Podman Compose setup uses:
 
 * https://github.com/rhpds/showroom-images[Source repository]
 * https://quay.io/organization/rhpds[quay.io/rhpds image registry]
-* xref:architecture.adoc[] -- how images fit into the deployment flow.
-* xref:deployer.adoc[] -- the Helm charts that reference these images.
+* xref:tmp-architecture.adoc[] -- how images fit into the deployment flow.
+* xref:tmp-deployer.adoc[] -- the Helm charts that reference these images.
