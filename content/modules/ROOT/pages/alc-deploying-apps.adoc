@@ -1,0 +1,78 @@
+= Deploying and Managing MultiCluster Applications with GitOps
+:navtitle: Deploying and Managing MultiCluster Applications with GitOps
+
+This module will walk you through how to deploy apps via the RHACM Console.
+Read and follow the instructions carefully.
+At the end of this module, you'll have deployed a new application.
+
+== Before You Begin
+
+== Deploying the rocketChat application
+
+https://github.com/rocketchat/rocket.chat[RocketChat] is an open-source team communication platform. We'll be using that as our example to deploy an application with RHACM.
+
+Access the Application menu on the left bar.
+
+Click on *Create Application -> ArgoCD ApplicationSet Push Model*.
+
+* *Name*: rocketchat
+* *Argo server*: openshift-gitops (name: argodemo, namespace: openshift-gitops)
+
+Click *NEXT*, and then *NEXT* again (skip the *Generators* section).
+
+In *3. Template*, under Source repository, select *Git*.
+
+Fill as follows:
+
+* URL: https://github.com/levenhagen/rocketchat-acm.git
+* Revision: main
+* Path: rocketchat
+
+image::alc-appset-git.png[ApplicationSet git specifications]
+
+Skip 4. Sync policy. (These are GitOps settings that are not covered in this module, but it will let the user specify some application syncing  configurations when there are differentes between the desired state and the live cluster state, such as automated sync, prune behavior, etc. Learn more about it https://argo-cd.readthedocs.io/en/latest/user-guide/sync-options/[here].)
+`
+In *5. Placement*, select the `default` clusterSet.
+
+Under *Label expressions*, select *Add label expression* and and set the following:
+
+* *Label*: environment
+* *Operator*: equals any of
+* *Values*: prod
+
+image::alc-appset-placement.png[ApplicationSet Placement]
+
+Click *NEXT* to review and *Submit*.
+
+Shortly, the application should be synced and you should see something like this:
+
+image::alc-rocketchat-synced.png[ApplicationSet synced]
+
+Now, let's review what we just did:
+
+* We used the rocketchat repository and created a ApplicationSet pointing to the public git repo. Feel free to explore the YAML files used https://github.com/levenhagen/rocketchat-acm/tree/main/rocketchat[here].
+* We defined a few Git settings. Most remained as default.
+* We selected the destination clusters by using the `default` clusterSet and a label selector `_environment=prod_`. This is how OpenShift GitOps deployed the rocketchat application to clusters matching this label.
+
+Now, feel free to select the *Details* tab to check out some other information about your app.
+
+image::alc-rocketchat-details.png[RocketChat Details]
+
+Also, if you prefer, you can do via the ArgoCD UI. Simply click here:
+
+image::alc-argocd-link-button.png[ArgoCD Link]
+
+Log in with your OpenShift creds, and you'll see this:
+
+image::alc-argocd-loggedin-UI.png[ArgoCD UI]
+
+Feel free to explore around ArgoCD
+
+You have now completed the overview of the Application Lifecycle functionality in RHACM.
+
+You successfully deployed an application to a target cluster using RHACM. This approach leveraged a Git repository which housed all of the manifests that defined your application. RHACM was able to take those manifests and use them as deployables, which were then deployed to the target clusters.
+
+
+
+
+

@@ -1,17 +1,35 @@
-= App Lifecycle
-:navtitle: App Lifecycle
+= Introduction to Application Lifecycle
+:navtitle: Introduction to Application Lifecycle
+
+In the previous lab, you explored the Observability functionality in RHACM. This allowed you to monitor resources and prepare your system for potential disruptions.
+
+Now, with governance and monitoring processes in place, the Application Lifecycle management functionality in RHACM provides the processes that are used to manage application resources on your managed clusters. This allows you to define a single or multi-cluster application using Kubernetes specifications, but with additional automation of the deployment and lifecycle management of resources to individual clusters. An application designed to run on a single cluster is straightforward and something you ought to be familiar with from working with OpenShift fundamentals. A multi-cluster application allows you to orchestrate the deployment of these same resources to multiple clusters, based on a set of rules you define for which clusters run the application components.
 
 This module will walk you through the Application Lifecycle functionality in RHACM.
 Read and follow the instructions carefully.
-At the end of this module, you'll have deployed the GitOps operator and 1 new application.
+At the end of this module, you'll have configured the OpenShift GitOps & RHACM integration, and deployed a new application with it.
 
-== Before You Begin
+== Architecture & Concepts
 
-Some clarifications:
+In this context, GitOps is a set of practices for application configurations to expand upon existing processes and improve the application lifecycle. It uses Git repositories as a single source of truth to deliver applications declaratively. 
 
-* The Governance module is a prerequesite to this module, as it provides a controlled and automated deployment of the the OpenShift GitOps operator, based on https://argo-cd.readthedocs.io/en/stable/[ArgoCD]. If you haven't gone through the Governance module yet, please do it or feel free to install the OpenShift GitOps operator manually via the OpenShift Software catalog.
-* RHACM offers 3 different integratopm approaches for GitOps integration: Push model, Pull model, and Agent model. Each pattern has its own usecases and benefits, but in this demo, we will focus on the push model. 
+Today, there are a variety of ways to categorize GitOps topology models, however when considering models by intent there are two broad categories that we see: Centralized and Distributed. These represent different ArgoCD patterns, and each pattern have their benefits and it's up to the organization to decide what to prioritize. In summary:
+In summary:
 
-== Integrating RHACM and GitOps
+* *Centralized*: Single pane of glass but a single point of failure
+* *Distributed*: No single point of failure, better scalability, however no single pane of glass.
 
-With the GitOps operator installed, we now need to make sure ArgoCD clusters inventory is synced with RHACM clusters inventory, so users can leverage the integration and deploy application to the fleet of clusters.
+image::alc-argo-cd-topologies.png[ArgoCD topologies]
+
+There are variations on these models to address the identified weakness in each.
+
+RHACM offers 3 different integration approaches for GitOps integration: 
+
+* *Push model*: Traditional centralized approach with all ArgoCD components residing on the Hub.
+* *Pull model*: Distributed approach, with some ArgoCD components moved spread across the managed clusters. 
+* *Agent model*: Evolutionary approach that tries to accomplish the best of both worlds (Centralized and Distributed).
+
+In this demo, we will focus on the push model. Here's an illustration to show the traditional push-model ArgoCD architecture:
+
+image::alc-argocd-traditional-arch.png[ArgoCD Push model]
+

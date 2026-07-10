@@ -1,0 +1,53 @@
+= Integrating RHACM & OpenShift GitOps
+:navtitle: Integrating RHACM & OpenShift GitOps
+
+OpenShift GitOps is a standalone OpenShift operator. It's available and included in the OpenShift software catalog as part of your OpenShift subscription. Built on ArgoCD, it provides a workflow that integrates Git repositories, continuous integration/continuous delivery (CI/CD) tools, and Kubernetes.  
+
+This section will walk you through the integration between RHACM and OpenShift GitOps for deploying and managing applications in a multicluster environment.
+Read and follow the instructions carefully.
+At the end of this section, you'll have configured the OpenShift GitOps & RHACM integration.
+
+== Before You Begin
+
+Some clarifications:
+
+* The Governance module is a prerequesite to this module, as it provides a controlled and automated deployment of the the OpenShift GitOps operator, based on https://argo-cd.readthedocs.io/en/stable/[ArgoCD]. If you haven't gone through the Governance module yet, please do it or feel free to install the OpenShift GitOps operator manually via the OpenShift Software catalog.
+
+== Integrating RHACM and GitOps
+
+Here, we're ensuring that the user "admin" also has administrator privileges on the OpenShift GitOps instance.
+
+By default, all users from the `cluster-admins` group are also Argo admins. So we're creating that group and adding our "admin" user to it.
+
+=== 1. Setting up ArgoCD admin permissions
+
+In the bastion host, run:
+
+[source,bash]
+----
+oc adm groups new cluster-admins admin
+----
+
+=== 2. Syncing RHACM and OpenShift GitOps clusters inventory
+
+With the GitOps operator installed, we now need to make sure ArgoCD clusters inventory is synced with RHACM clusters inventory, so users can leverage the integration and deploy application to any cluster in the fleet.
+
+Access the Application menu on the left bar.
+
+Click on *Create Application -> ArgoCD ApplicationSet Push Model*.
+
+Now in the field *Argo server*, there's no Argo servers available. So, select *Add Argo Server*.
+
+image::alc-add-argo-server.png[Add Argo Server]
+
+Fill the form as follows:
+
+* *Name*: argodemo
+* *Namespace*: openshift-gitops
+* *ClusterSet*: `default` `global`
+
+image::alc-argo-server.png[Adding Argo Server]
+
+Click on *ADD*.
+
+Now, the *GitOpsCluster* resource was created and will make sure RHACM and OpenShift are integrated and synchronized.

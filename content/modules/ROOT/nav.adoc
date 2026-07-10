@@ -17,6 +17,8 @@
 
 .4. Application Lifecycle 
 * xref:alc-intro-app-lifecycle.adoc[Introduction to Application Lifecycle]
+* xref:alc-integrating-gitops-rhacm.adoc[Integrating RHACM & OpenShift GitOps]
+* xref:alc-deploying-apps.adoc[Deploying and Managing MultiCluster Applications with GitOps]
 
 .5.Business Continuity
 * xref:bc-intro-business-continuity.adoc[Introduction to Business Contitnuity]

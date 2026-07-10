@@ -4,35 +4,277 @@
 While the RHACM UI offers a great way to get started and create policies, some advanced use cases might require some additional steps and capabilities.
 In this section, we'll introduce Policy Generator - a utility to help automate the creation of RHACM policies.
 
-Read and follow the instructions carefully.
+It was mentioned before that the RHACM UI provides an interface for creating policies intuitively. What often happens in the real world is that many policies are created using advanced features like "templating." This feature allows us to create and write new policies using variables and thus achieve more advanced use cases.
+
+Policy Generator is a tool that converts simple YAML files (templates/base manifests) into Governance Policies automatically. If you're familiar to https://kustomize.io/[Kustomize], Policy Generator was built as a Kustomize plugin.
+
+*TL:DR - Main benefits*:
+
+* *Less manual work*: reduces dozens of YAML files into just a few, also helping with reusability.
+* *Standardization & Scalability*: applies consistent configurations across multiple clusters, leveraging templates and variables.
+* *GitOps friendly*: ideal for use with Argo CD or Git repositories.
+
+Now, proceed, read and follow the instructions carefully.
 
 == Before you begin
 
-Setup... clusterSets.
+A little setup.
 
-== Creating an Certificate Policy 
+In the bastion machine, run:
 
-Navigate to the Governance screen and click *Create policy*. 
+[source,bash]
+----
+git clone https://github.com/levenhagen/rhdp-rhacm-demo
+cd rhdp-rhacm-demo/acm-policies/acm-observ/
+./prerequesites.sh
+----
 
-Build a policy with the following information:
+The script above will install the following CLI tooling:
 
-* Name: policy-cert
-* Namespace: default
+* kustomize
+* policygenerator
+* policytools
 
-Click *NEXT*.
+== Getting started with Policy Generator 
 
-Policy Templates: Click on *Add policy template* and select *Certificate Management expiration*.
+We will use the policy generator to enable the MultiCluster Observability component in RHACM. To enable it, we need to apply some configurations regarding the storage of metrics. In fact, we will start by creating an S3 bucket to store the metrics that will be collected by ACM Hub. More details about Observability will be covered in the next module.
 
-Click *NEXT*.
+=== 1. Creating the S3 bucket
 
-On Placement, click on *New placement*.
-Select *global* as the clusterSet.
+* Access the bastion host.
+* Verify your AWS connection is set up:  
+[source,bash]
+----
+aws configure
 
-Leave everything else as default and click *NEXT*.
+AWS Access Key ID [****************]:
+AWS Secret Access Key [****************]:
+Default region name [us-east-2]:
+Default output format [None]:
+----
+
+Then run the following command to create the S3 bucket: 
+[source,bash]
+----
+aws s3 mb s3://grafana-$GUID
+----
+
+IMPORTANT: *Please take note of the bucket name.*
+
+=== 2. Store the bucket details in the cluster
+
+In the bastion machine, run:
+
+[source,bash]
+----
+oc new-project acm-policies
+export BUCKET=grafana-$GUID
+export AWS_ACCESS_KEY_ID="<<replace with your AWS ACCESS KEY ID>>"
+export AWS_SECRET_ACCESS_KEY="<<replace with your AWS SECRET ACCESS KEY ID>>"
+
+cat <<EOF | envsubst | oc apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: s3-storage-connect
+  namespace: acm-policies
+type: Opaque
+stringData:
+  bucket: $BUCKET
+  endpoint: s3.amazonaws.com
+  access_key: $AWS_ACCESS_KEY_ID
+  secret_key: $AWS_SECRET_ACCESS_KEY
+EOF
+----
+
+This will create a secret in a new project/namespace called acm-policies. The secret will be used in the next steps.
+
+=== 3. Examine the contents
+
+To enable Observability in RHACM, we need a couple of things:
+
+* The MultiClusterObservability YAML - The resource that configures Observability in RHACM
+* The Observability namespace
+* The Secret created in the previous step 
+
+As part of the lab, we already provided all the YAMLs/Kubernetes resources needed to enable MultiCluster Observability in RHACM: The namespace, the secret/credentials and the MultiClusterObservability CR definition.
+Let's take a look at main resource - The MultiClusterObservability CR:
+
+[source,yaml]
+----
+apiVersion: observability.open-cluster-management.io/v1beta2
+metadata:
+  kind: MultiClusterObservability
+  name: observability
+spec:
+  observabilityAddonSpec: {}
+  storageConfig:
+    metricObjectStorage:
+      key: thanos.yaml
+      name: thanos-object-storage
+----
+
+Or if you prefer, you can see it yourself in the bastion host:
+
+[source,bash]
+----
+cd ~/rhdp-rhacm-demo/acm-policies/acm-observ
+cat multiclusterobservability.yaml
+----
+
+NOTE: This is a simple and default MultiClusterObservability CR. There are multiple other optional fields to customize this resource. If you want to change optional parameters like retentionResolution, storageClass to use, etc., please check the https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/apis/apis#rhacm-docs_apis_multiclusterobservability_jsonmulticlusterobservability[API reference].
+
+On other hand, another important resource is the `thanos-secret.yaml` file. It uses the very powerful functionality called templatized variables, so the credentials are not directly exposed, and can be stored in Git. RHACM Policy controllers will replace those variables with the actual secrets at runtime.
+
+[source,bash]
+----
+[...]
+stringData:
+  thanos.yaml: |
+    type: s3
+    config:
+      bucket: '{{ fromSecret "acm-policies" "s3-storage-connect" "bucket" | base64dec }}'
+      endpoint: s3.amazonaws.com
+      insecure: false
+      access_key: '{{ fromSecret "acm-policies" "s3-storage-connect" "access_key" | base64dec }}'
+      secret_key: '{{ fromSecret "acm-policies" "s3-storage-connect" "secret_key" | base64dec }}'
+----
+
+=== 4. Wrapping it all together with Policy Generator
+
+Now, with prerequesites ready, we'll feed Policy Generator with this information, and create a policy.
+
+Create an empty kustomize file by running the following command.
+
+[source,bash]
+----
+mkdir ~/policy-gen
+cd ~/policy-gen
+kustomize create
+----
+
+This should have created a file called `kustomization.yaml`. Edit the file, so it looks like this:
+
+[source,bash]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - managedclustersetbinding.yaml
+
+generators:
+  - generator.yaml
+----
+
+As we’re creating a new namespace, just like in the previous step, we need to create also a new *ManagedClusterSetBinding*. Create the “managedclustersetbinding.yaml” file with the following content.  This will bind the *acm-policies* namespace with the *default* ClusterSet.  Earlier we performed this for the default namespace using the RHACM UI.
+
+NOTE: the ManagedClusterSetBinding must be named the same as the clusterSet it is referencing.
+
+[source,bash]
+----
+cat > managedclustersetbinding.yaml << EOF
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: default
+  namespace: acm-policies
+spec:
+  clusterSet: default
+EOF
+----
+
+Now, the main step: let’s create the *generator.yaml* file, that’s referenced in the kustomization.yaml file. This is #the heart of the Policy Generator operation#. It’s the resource that defines what objects will be wrapped into a policy, as well as the policy configurations such as the `remediationAction`, the placement, the severity, and so on.
+
+Create the “generator.yaml” file to configure how the policy will be generated.
+
+[source,bash]
+----
+cat > generator.yaml << EOF
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: gen-policy-acm-observ
+policyDefaults:
+  namespace: acm-policies
+  remediationAction: enforce
+  consolidateManifests: false
+  severity: medium
+  placement:
+    labelSelector:
+      matchExpressions:
+        - key: local-cluster
+          operator: Exists
+
+placementBindingDefaults:
+  name: "acm-observ"
+
+policies:
+  - name: acm-observability
+    description: "Configures ACM Observability on the Hub cluster"
+    manifests:
+      - path: namespace.yaml
+        name: acm-observ-namespace
+
+      - path: thanos-secret.yaml
+        name: acm-observ-thanos-secret
+
+      - path: multiclusterobservability.yaml
+        name: acm-observ
+
+EOF
+----
+
+Here's a few explanations:
+
+* We are setting the remediationAction to “enforce” so that the policy will apply the configuration to the cluster.  
+* The placement is configured to only select the Hub cluster. 
+* The manifest section includes the files we want to include in the policy.
+
+With that, we should be all good to go! 👍
+
+=== 5. Validating the generated policy
+
+Before applying the policy to the cluster we can test it locally to ensure the Policy Generator is configured correctly.
+Run the following command to execute the Policy Generator and output the generated policy.
+
+[source,bash]
+----
+kustomize build --enable-alpha-plugins ./
+----
+
+Note the following items in the output:
+
+* The Policy includes each manifest we specified in the generator.yaml
+* The Policy Generator created a Placement with the specified labelSelector and a PlacementBinding referencing the Policy and the Placement.
+
+Remember, at the beggining, as part of the prerequesites for this section, we installed a CLI tool called `policytools`? 
+
+To validate the Policy using the PolicyTools let's run:
+
+[source,bash]
+----
+kustomize build --enable-alpha-plugins "./" | \
+yq 'select(.kind == "Policy" and .metadata.name == "acm-observability")' | \
+policytools template-resolver  --cluster-name local-cluster
+----
+
+This will resolve the templates in the thanos-secret to validate the template logic.
+
+Note the value of the thanos-object-storage Secret, now the value should return the expected bucket name, access_key, and secret_key.
+
+Now, if everything went successfully as expected, finally, run the following command to create the policy on the cluster.  We understand a lot of policy development occurs in a developer setup including IDEs and terminals, but in a production setting these files would be stored in a git repository and applied as shown earlier using a gitops application via the RHACM UI.
+
+[source,bash]
+----
+kustomize build --enable-alpha-plugins ./ | oc apply -f -
+----
+
+Within a few moments, you can check the progress of the Obserbility policy in the RHACM Governance page and the policy should be compliant.
+
+image::gov-policygen-finished.png[Policy generated]
 
 
-== Creating an Operator Policy - OpenShift GitOps
 
-Right now, let's create a policy which will declaratively install and manage the OpenShift GitOps operator. The OpenShift GitOps operator, based on ArgoCD, is an operator that provides GitOps capabilities and integrates with RHACM. This operator will be used later in the course, more specifically, in the Application Lifecycle module.
 
-=== 1. Creating the policy
+
