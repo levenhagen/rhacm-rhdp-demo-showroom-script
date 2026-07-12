@@ -1,47 +1,57 @@
 = Business Continuity
 :navtitle: Business Continuity
 
+Business Continuity represents a set of processes dedicated to maintaining the continuity of your cluster services and ensuring they remain available during disruptions. In the context of cloud-native technologies, it encompasses the strategies, architectures, and operational practices required to minimize downtime, protect critical workloads, and enable rapid recovery from failures. 
+
 This page walks you through the Business Continuity module in RHACM.
 Read and follow the instructions carefully.
 At the end of this module, you'll have You will have understood DR strategies for RHACM, and deployed the Backup and Restore operator.
 
-== Before You Begin
+== Concepts & Architecture
 
-You will need:
+First off, in the context of RHACM, we can talk about two different aspects of Disaster Recovery mechanisms:
 
-* A content repository with your Antora lab instructions (or a fork of the https://github.com/rhpds/showroom_template_nookbag[template]).
-See xref:tmp-content-repo.adoc[] if you have not created one yet.
-* Access to the https://github.com/rhpds/agnosticv[agnosticv] repository to create or edit a catalog item.
-* Familiarity with YAML and basic Ansible concepts.
+* 1: Business Continuity and Disaster Recovery for Applications.
+* 2: Business Continuity and Disaster Recovery for the RHACM Hub itself.
 
-== Path A -- OpenShift 4 Workload
+Let's focus on *#1* first:
 
-Use this path when your lab provisions an OpenShift cluster and Showroom runs as a pod on that cluster.
+RHACM teams up with Red Hat OpenShift Data Foundation to provide resiliency for applications. 
+In this lab, we won't focus deeply on DR and simulate a disaster, but we'll explain what it looks like.
 
-=== 1. Add the collection to your catalog item
+=== Draw me a picture!
 
-In your catalog item's `common.yaml`, declare the Showroom collection as a dependency:
+RHACM & OpenShift Data Foundation together provides *Regional Disaster Recovery (Regional-DR)* and *Metro Disaster Recovery (Metro-DR)*.
 
-[source,yaml,subs="+attributes"]
-----
-requirements_content:
-  collections:
-    - name: https://github.com/agnosticd/showroom.git
-      type: git
-      version: {showroom-collection-version}
-----
+* *Regional-DR* is a cloud computing strategy that backs up applications and data across different geographic areas. If a primary datacenter goes offline, workloads safely switch to a secondary region. This ensures systems stay online during large-scale outages.
 
-=== 2. List the workloads
+image::bc-regional-dr.png[Regional-DR]
 
-Add the Showroom workload to your workloads list.
-Showroom should come **last** so that all infrastructure and credentials are available:
+* *Metro-DR* capability provides volume persistent data and metadata replication across sites that are in the same geographical area. In the public cloud these would be similar to protecting from an Availability Zone failure. Metro-DR ensures business continuity during the unavailability of a data center with no data loss. This is usually expressed at Recovery Point Objective (RPO) and Recovery Time Objective (RTO).
 
-[source,yaml]
-----
-workloads:
-  - ocp4_workload_my_operators        # your infra workloads first
-  - agnosticd.showroom.ocp4_workload_showroom
-----
+image::bc-metro-dr.png[Metro-DR]
 
-If you want the OpenShift web console embedded as an iframe tab, add `ocp4_workload_ocp_console_embed` before the main Showroom workload.
-See xref:tmp-ocp-integration.adoc[].
+NOTE: **RPO vs RTO**: **RPO** is a measure of how frequently you take backups or snapshots of persistent data. In practice, the RPO indicates the amount of data that will be lost or need to be reentered after an outage. Metro-DR solution ensures your RPO is zero because data is replicated in a synchronous fashion. 
+*RTO* is the amount of downtime a business can tolerate. The RTO answers the question, “How long can it take for our system to recover after we were notified of a business disruption?”
+
+image::bc-comparison-dr.png[Backup vs Regional-DR vs Metro-DR]
+
+If you're interested in knowing more about it, here's a interactive demo about Disaster Recovery for Applications and Virtual Machines using Red Hat Advanced Cluster Management and Red Hat OpenShift Data Foundation.
+
+
+++++
+<!--ARCADE EMBED START-->
+<div style="position: relative; padding-bottom: calc(50.3968% + 41px); height: 0px; width: 100%;">
+    <iframe 
+        src="https://demo.arcade.software/DaVCtST5FAksCu7w0vZp?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" 
+        title="Regional Disaster Recovery for VMs using RHACM and ODF" frameborder="0" 
+        loading="lazy" 
+        webkitallowfullscreen 
+        mozallowfullscreen 
+        allowfullscreen 
+        allow="clipboard-write; autoplay" 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" 
+    ></iframe>
+</div>
+<!--ARCADE EMBED END-->
+++++

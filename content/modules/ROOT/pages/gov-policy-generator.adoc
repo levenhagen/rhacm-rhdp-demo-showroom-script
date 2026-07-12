@@ -274,6 +274,17 @@ Within a few moments, you can check the progress of the Obserbility policy in th
 
 image::gov-policygen-finished.png[Policy generated]
 
+And if everything went successfully, you've just enabled MultiCluster Observability declaratively with Policy Generator.
+
+Let's recap:
+
+* You've created a object store bucket on AWS to store the metrics.
+* You've passed credentials from this storage to OpenShift/RHACM.
+* With the `MultiClusterObservability` Custom Resource/YAML defined in Git, Policy Generator was able to wrap it all into a Policy, and now Observability is installed and managed via this policy.
+
+Congrats!
+In the next step, we'll explore more the Observability topic more deeply.
+
 
 
 

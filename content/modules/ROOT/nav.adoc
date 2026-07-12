@@ -22,8 +22,9 @@
 
 .5.Business Continuity
 * xref:bc-intro-business-continuity.adoc[Introduction to Business Contitnuity]
+* xref:bc-acm-hub-backup-restore.adoc[Hub Backup and Restore]
 
-.Template Pages
+.Template Pages (/tmp - will delete later)
 * xref:tmp-quick-start.adoc[** Quick Start **]
 * xref:tmp-content-repo.adoc[Creating a Content Repository]
 * xref:tmp-agnosticv-config.adoc[AgnosticV Configuration]

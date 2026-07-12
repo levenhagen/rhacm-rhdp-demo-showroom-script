@@ -1,0 +1,160 @@
+= Hub Backup & Restore
+:navtitle: Hub Backup & Restore
+
+We've just seen how to enable disaster recovery strategies for Applications and Virtual Machines. Now, let's do some real cracking! If you recall, we separated the DR mechanisms into DR for applications and DR for the RHACM platform itself(the _RHACM Hub_).
+
+This section walks you through the Backup and Restore utility in RHACM.
+Read and follow the instructions carefully.
+At the end of this section, you'll have deployed the Backup and Restore operator and established a backup schedule for the Hub.
+
+== Before you begin
+
+Some clarifications:
+
+The cluster backup and restore is provider by the Backup & Restore operator, and it runs runs on the hub cluster, providing the solutions for RHACM hub cluster failures. When the hub cluster fails, some features stop working, even if all managed clusters still work. 
+
+hen the hub cluster is unavailable, you need a recovery plan to decide if recovery is possible, or if you need to recover the data on a newly deployed hub cluster.
+
+This feature allows backups of any third-party resources that extend the hub cluster installation. With this backup solution, you can define cron-based backup schedules that run at specified time intervals. When the hub cluster fails, you can deploy a new hub cluster and move the backed up data to that new hub cluster.
+
+NOTE: Unlike Regional-DR and Metro-DR, backup and restore does not require integration with Red Hat Data Foundation.
+
+Here's an illustration to show what we'll be doing in the next steps:
+
+image::bc-acm-hub-backup-arch.png[Hub Backup and Restore architecture]
+
+For a list of resources that are backed up by default, refer to the https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/business_continuity/business-cont-overview#backed-up-resources[documentation].
+
+== Enabling the Backup & Restore operator
+
+In this lab, we'll only backup a Hub cluster. This is useful for active-passive scenarios, where there's one active hub cluster, and another passive hub cluster.
+
+To backup the primary hub cluster data, you do not need an `active-passive` configuration. You can simply backup and store the hub cluster data. This way, if there is an issue or failure, you can deploy a new hub cluster and restore your primary hub cluster data on this new hub cluster. To reduce the time to recover the primary hub cluster data, you can use an active-passive configuration; however, this is not necessary.
+
+=== 1. Creating the storage
+
+One more time, we will be using a AWS S3 Storage bucket for storing the hub backup data.
+
+[source,bash]
+----
+aws s3api create-bucket --bucket acm-backup
+----
+
+=== 2. Creating the storage location secret
+
+Create a file named `credentials-backup` for the backup storage location in the appropriate format for your provider, in our case, AWS.
+[source,bash]
+----
+[default]
+aws_access_key_id=<AWS_ACCESS_KEY_ID>
+aws_secret_access_key=<AWS_SECRET_ACCESS_KEY>
+----
+
+Now let's create a secret with its content.
+
+[source,bash]
+----
+oc create secret generic cloud-credentials -n openshift-adp --from-file cloud=credentials-backup
+----
+
+=== 3. Enabling the flag 
+
+Enable the cluster backup and restore operator, cluster-backup, by updating the `MultiClusterHub` resource and setting the `cluster-backup` parameter to true. For this, let's use RHACM Search!
+
+In the left navigation menu, Go to *Search*.
+
+Type: `kind`:`MultiClusterHub`
+
+<<insert image>>
+
+Click on the resource, and edit the line where it says: `cluster-backup`: `false`. Insert `cluster-backup`: `true`
+
+<<insert image>>
+ 
+=== 4. Create the DataProtectionApplication
+
+This will connect RHACM to the S3-like storage.
+
+[source,bash]
+----
+cat <<EOF | oc apply -f -
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: dpa-sample
+spec:
+  configuration:
+    velero:
+      defaultPlugins:
+      - openshift
+      - aws
+    restic:
+      enable: true
+  backupLocations:
+    - name: default
+      velero:
+        provider: aws
+        default: true
+        objectStorage:
+          bucket: acm-backup
+          prefix: my-prefix
+        config:
+          region: us-east-2
+          profile: "default"
+        credential:
+          name: cloud-credentials
+          key: cloud
+  snapshotLocations:
+    - name: default
+      velero:
+        provider: aws
+        config:
+          region: us-west-2
+          profile: "default"
+----
+
+=== 5. Create a Backup schedule
+
+With everything all set, let's set up a Backup schedule. Apply:
+
+[source, bash]
+----
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: BackupSchedule
+metadata:
+  name: schedule-acm
+  namespace: open-cluster-management-backup
+spec:
+  veleroSchedule: 0 */2 * * *  #1#
+  veleroTtl: 120h #2#
+  useManagedServiceAccount: true #3#
+  paused: false #4#
+----
+
+* *1* - The veleroSchedule is a required property and defines a cron job for scheduling the backups. In the earlier example, it creates a backup every 2 hours.
+
+* *2* Optional: veleroTtl is an optional property and defines the expiration time for a scheduled backup resource. If not specified, the maximum default value set by Velero is used, which is 720h. It deletes scheduled backups after 120h.
+
+* *3* Optional: useManagedServiceAccount is an optional property which can enable the automatic import feature, importing clusters in a restore operation. If you set it to true, it enables the automatic import feature, importing clusters in a restore operation.
+
+* *4* Optional: paused is an optional property which can pause the backup schedule. If you set it to true, it pauses the backup schedule, deleting all Velero schedules created by this resource.
+
+With everything all set, we can validate the backup in 2 ways.
+
+=== Validating the Backup - Path a
+
+You might have noticed (or not?) that while enabling the backup feature flag via the `MultiClusterHub` CR, as part of the operator installation, some policies were created automatically in the Governance page. The policies will validate if the installation was properly configured, and if your Backup Schedule is created! Here's a screenshot of how it should look like:
+
+<<insert image>>
+
+=== Validating the Backup - Path B
+
+In your lab, you might have received credentials to log in to the AWS Console. There, you can visit the S3 page, and look for the `acm-backup` bucket, and you will be able to see its content.
+
+<<insert image from AWS>>
+
+And with that, we finish our lab!
+If you have come so far, congratulations!
+
+We hope you enjoyed!
+
