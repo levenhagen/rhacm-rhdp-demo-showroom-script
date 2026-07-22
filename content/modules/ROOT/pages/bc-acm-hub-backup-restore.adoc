@@ -138,7 +138,7 @@ image::bc-policy-set.png[RHACM Backup PolicySet]
 
 When you click on that policy, it'll will take you to that policy page. Access the *Results* tab.
 
-image::bc-policy-backup-results.png
+image::bc-policy-backup-results.png[Backup Policy results]
 
 In the Results tab, you'll be able to see every component that the policy is watching: Some components are validated/compliant ✅, while others are still not compliant ❌ to the policy.
 
