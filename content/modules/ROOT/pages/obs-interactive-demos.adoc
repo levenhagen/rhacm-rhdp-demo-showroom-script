@@ -1,0 +1,62 @@
+= Observability Interactive Demos
+:navtitle: Observability Interactive Demos
+
+== Right Sizing ==
+
+++++
+<!--ARCADE EMBED START-->
+<div style="position: relative; padding-bottom: calc(52.7116% + 41px); height: 0px; width: 100%;">
+  <iframe
+    src="https://demo.arcade.software/yx47mJDgw7mIauowmkvt?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
+    title="Right-sizing with Red Hat Advanced Cluster Management"
+    frameborder="0"
+    loading="lazy"
+    webkitallowfullscreen
+    mozallowfullscreen
+    allowfullscreen
+    allow="clipboard-write; autoplay"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"
+  ></iframe>
+</div>
+<!--ARCADE EMBED END-->
+++++
+
+== Monitor OpenShift Virtualization with RHACM ==
+
+++++
+<!--ARCADE EMBED START-->
+<div style="position: relative; padding-bottom: calc(52.5794% + 41px); height: 0px; width: 100%;">
+  <iframe
+    src="https://demo.arcade.software/2gpZ66ERCX0QeKIR0pdd?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
+    title="OpenShift Virtualization Management at Scale with RHACM"
+    frameborder="0"
+    loading="lazy"
+    webkitallowfullscreen
+    mozallowfullscreen
+    allowfullscreen
+    allow="clipboard-write; autoplay"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"
+  ></iframe>
+</div>
+<!--ARCADE EMBED END-->
+++++
+
+== Customizable Dashboards in the RHACM UI ==
+
+++++
+<!--ARCADE EMBED START-->
+<div style="position: relative; padding-bottom: calc(50.5952% + 41px); height: 0px; width: 100%;">
+    <iframe 
+        src="https://demo.arcade.software/eHXGrEk44EyQaq1QeRV9?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" 
+        title="Customizable Observability Dashboards" 
+        frameborder="0" 
+        loading="lazy" 
+        webkitallowfullscreen 
+        mozallowfullscreen 
+        allowfullscreen 
+        allow="clipboard-write; autoplay" 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" 
+    ></iframe>
+</div>
+<!--ARCADE EMBED END-->
+++++

@@ -1,5 +1,5 @@
-= MultiCluster Observability
-:navtitle: MultiCluster Observability
+= Introduction to MultiCluster Observability
+:navtitle: Introduction to MultiCluster Observability
 
 You've just finished configuring the policy-based Governance in RHACM. 
 This page now walks you through the MultiCluster Observability module in RHACM.
@@ -8,4 +8,15 @@ At the end of this module, you'll have You will have understood and visualized t
 
 == Concepts & Architecture
 
-MultiCluster Observability, in the context of RHACM, represents the observability signals that provides insights about the health and utilization of clusters, and workloads across the entire fleet of clusters.
+MultiCluster Observability, in the context of RHACM, represents the observability signals that provides insights about the health and utilization of clusters, and workloads across the entire fleet of clusters. Let's have a quick look at the architecture:
+
+image::obs-observability-arch.png[RHACM Observability architecture]
+
+In short, when the MultiCluster Observability operator resource is enabled and deployed, it's going to deploy these Open Source components in the Hub:
+
+* https://grafana.com/oss/[Grafana] - for Dashboards visualization
+* https://thanos.io/[Thanos] - for long-term storage and data retention
+* https://prometheus.io/docs/alerting/latest/alertmanager/[AlertManager] - for handling and grouping alerts in a multicluster setting
+
+As consequently, the operator will also deploy and manage collectors on the managed clusters, so you don't have to worry about managing any new stacks, deployments or configurations. RHACM supports the provided stack will take care of that part.
+

@@ -176,7 +176,7 @@ With everything all set, the backup policy should now report "No violations ✅"
 
 In your lab, you might have received credentials to log in to the AWS Console. There, you can visit the AWS S3 page, and look for the `acm-backup-xxxxx` bucket, and you will be able to see its content.
 
-<<insert image from AWS>>
+image::bc-s3-aws.png[S3 page in AWS]
 
 And with that, we finish our lab!
 If you have come so far, congratulations!

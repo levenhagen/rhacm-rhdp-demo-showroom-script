@@ -1,0 +1,52 @@
+= Analyzing Dashboards and Metrics
+:navtitle: Analyzing Dashboards and Metrics
+
+The MultiCluster Observability component is deployed and we'll now take a break from the terminal, and we'll watch and analize what's RHACM has in store for Observability.
+
+== Observability Dashboards
+
+The great value about RHACM MultiCluster Observability is about having ready-to-use dashboards that provides valuable information for users.
+
+RHACM ships many dashboards by default, that are populated with specific metrics that are collected by the RHACM Observability operators. In this section, we'll explore some of the main dashboards that helps IT admins to maintain the health of Kubernetes clusters.
+
+On the top-right portion of the *Clusters* page, Access the *Grafana* link.
+
+image::obs-grafana-link.png[Grafana link]
+
+As soon as you click, you'll be redirected to the Dashboard homepage, which shows the *Clusters Overview* dashboard.
+
+image::obs-grafana-homepage.png[Observability homepage]
+
+This dashboard already provides a great overview of all clusters, including resource consumption details, networking, etc.
+
+Let's go deeper and find some other information. Click in Dashboards.
+
+image::obs-grafana-dashboards.png[Observability dashboards]
+
+In this list above, you'll see all the dashboards that are provided by default by RHACM.
+
+It ranges from resource analysis and consumption to measurements of API servers, etcd, workloads, etc. Classified by cluster, namespace, etc. There are many variations to help get the best visualization and help to find root causes.
+
+One widely used dashboard is *Right-sizing*. Click on *RightSizing Recommendation* -> *ACM Right-sizing Namespace*.
+
+image::obs-right-sizing-dash.png[Right Sizing]
+
+Right-sizing analyzes real-time resource consumption (CPU and memory) and comparing it with the originally requested resources, offers actionable recommendations to optimize workloads at the namespace and cluster level. In this dashboard, you can compare how much resources are reserved for all the workloads, and how much the workloads are actually consuming, so you can adjust and avoid idle resources.
+
+Feel free to explore all the other dashbords and see the value in each one of them.
+
+== Default and Custom Metrics
+
+The dashboards are populated with metrics that are automatically collected by RHACM. In many real-world cases, these metrics need to be adjusted, or even new metrics need to be added, so that new dashboards and visualizations can be created to suit the needs of each organization.
+
+RHACM has pre-defined list of metrics that will cover most of the cases. These are called platform metrics. Here's a https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/observability/observing-environments-intro#default_metrics[list] of all of them.
+
+All these components are widely customizable:
+
+* You can add new custom metrics to the RHACM collector -> Doc https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/observability/observing-environments-intro#add-custom-metrics-mcoa[link].
+* You can change the retention period and the size of the Observability stack -> Doc https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/observability/observing-environments-intro#obs-instance-sizes[link].
+* You can do many more configurations to the MultiClusterObservability CR component. These settings require a deeper analysis of the environment, to best configure and fine tune it according to the environment needs. This is a crucial step as observability https://prometheus.io/docs/concepts/data_model/[timeseries] can consume a lot of resources.
+
+This is a broad and extensive topic, and this course is only providing an overview. Please refer to the https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/observability/[RHACM docs] to learn more.
+
+The next section is an independent section that consists of interactive demos where you can click through and learn more about RHACM Observability solutions. It's a more informative page, to learn more about observability in the context of multicluster setups, and is not a requirement to complete this workshop. Feel free to explore it, or skip it to continue the workshop and return to it later.

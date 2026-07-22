@@ -14,6 +14,8 @@
 
 .3. MultiCluster Observability
 * xref:obs-intro-observability.adoc[Introduction to Observability]
+* xref:obs-analyzing-dashs-metrics.adoc[Analyzing Dashboards and Metrics]
+* xref:obs-interactive-demos.adoc[Observability Interactive Demos]
 
 .4. Application Lifecycle 
 * xref:alc-intro-app-lifecycle.adoc[Introduction to Application Lifecycle]
