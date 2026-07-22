@@ -26,7 +26,7 @@ In the bastion machine, run:
 ----
 git clone https://github.com/levenhagen/rhdp-rhacm-demo
 cd rhdp-rhacm-demo/acm-policies/acm-observ/
-./prerequesites.sh
+./prerequisites.sh
 ----
 
 The script above will install the following CLI tooling:
@@ -70,7 +70,7 @@ In the bastion machine, run:
 oc new-project acm-policies
 export BUCKET=grafana-$GUID
 export AWS_ACCESS_KEY_ID="<<replace with your AWS ACCESS KEY ID>>"
-export AWS_SECRET_ACCESS_KEY="<<replace with your AWS SECRET ACCESS KEY ID>>"
+export AWS_SECRET_ACCESS_KEY="<<replace with your AWS SECRET ACCESS KEY>>"
 
 cat <<EOF | envsubst | oc apply -f -
 apiVersion: v1
@@ -142,14 +142,12 @@ stringData:
 
 === 4. Wrapping it all together with Policy Generator
 
-Now, with prerequesites ready, we'll feed Policy Generator with this information, and create a policy.
+Now, with prerequisites ready, we'll feed Policy Generator with this information, and create a policy.
 
 Create an empty kustomize file by running the following command.
 
 [source,bash]
 ----
-mkdir ~/policy-gen
-cd ~/policy-gen
 kustomize create
 ----
 
@@ -167,7 +165,7 @@ generators:
   - generator.yaml
 ----
 
-As we’re creating a new namespace, just like in the previous step, we need to create also a new *ManagedClusterSetBinding*. Create the “managedclustersetbinding.yaml” file with the following content.  This will bind the *acm-policies* namespace with the *default* ClusterSet.  Earlier we performed this for the default namespace using the RHACM UI.
+As we’re creating a new namespace, just like in the previous step, we need to create also a new *ManagedClusterSetBinding* (listed in the file above). Create the “managedclustersetbinding.yaml” file with the following content.  This will bind the *acm-policies* namespace with the *default* ClusterSet.  Earlier we performed this for the default namespace using the RHACM UI.
 
 NOTE: the ManagedClusterSetBinding must be named the same as the clusterSet it is referencing.
 
@@ -184,7 +182,7 @@ spec:
 EOF
 ----
 
-Now, the main step: let’s create the *generator.yaml* file, that’s referenced in the kustomization.yaml file. This is #the heart of the Policy Generator operation#. It’s the resource that defines what objects will be wrapped into a policy, as well as the policy configurations such as the `remediationAction`, the placement, the severity, and so on.
+Now, the main step: let’s create the *generator.yaml* file, that’s also referenced in the kustomization.yaml file. This is #the heart of the Policy Generator operation#. It’s the resource that defines what objects will be wrapped into a policy, as well as the policy configurations such as the `remediationAction`, the placement, the severity, and so on.
 
 Create the “generator.yaml” file to configure how the policy will be generated.
 
@@ -248,7 +246,7 @@ Note the following items in the output:
 * The Policy includes each manifest we specified in the generator.yaml
 * The Policy Generator created a Placement with the specified labelSelector and a PlacementBinding referencing the Policy and the Placement.
 
-Remember, at the beggining, as part of the prerequesites for this section, we installed a CLI tool called `policytools`? 
+Remember, at the beggining, as part of the prerequisites for this section, we installed a CLI tool called `policytools`? 
 
 To validate the Policy using the PolicyTools let's run:
 

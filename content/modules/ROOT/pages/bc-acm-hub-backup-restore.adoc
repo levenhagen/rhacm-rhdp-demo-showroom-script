@@ -37,43 +37,50 @@ One more time, we will be using a AWS S3 Storage bucket for storing the hub back
 
 [source,bash]
 ----
-aws s3api create-bucket --bucket acm-backup
+aws s3api create-bucket --bucket acm-backup-$GUID
 ----
 
-=== 2. Creating the storage location secret
+IMPORTANT: Make note of your bucket name.
+
+=== 2. Enabling the flag 
+
+Enable the cluster backup and restore operator, cluster-backup, by updating the `MultiClusterHub` resource and setting the `cluster-backup` parameter to true. For this, let's use RHACM Search!
+
+In the left navigation menu, Go to *Search*.
+
+Type: `kind`: `MultiClusterHub`
+
+image::bc-search-mch.png[RHACM Search]
+
+Click on the resource, go to the YAML tab, and edit the line where it says: `cluster-backup`: `false`. Insert `cluster-backup`: `true`
+
+image::bc-search-backup-yaml.png[RHACM Search - MultiClusterHub CR]
+
+Now the Hub Backup feature is enabled and this step will install the necessary dependencies.
+
+=== 3. Creating the storage location secret
 
 Create a file named `credentials-backup` for the backup storage location in the appropriate format for your provider, in our case, AWS.
 [source,bash]
 ----
+cat <<EOF > ~/credentials-backup
 [default]
-aws_access_key_id=<AWS_ACCESS_KEY_ID>
-aws_secret_access_key=<AWS_SECRET_ACCESS_KEY>
+aws_access_key_id=<< replace with your AWS_ACCESS_KEY_ID >>
+aws_secret_access_key=<< replace with your AWS_SECRET_ACCESS_KEY >>
+EOF
 ----
 
 Now let's create a secret with its content.
 
 [source,bash]
 ----
-oc create secret generic cloud-credentials -n openshift-adp --from-file cloud=credentials-backup
+cd ~
+oc create secret generic cloud-credentials -n open-cluster-management-backup --from-file cloud=credentials-backup
 ----
-
-=== 3. Enabling the flag 
-
-Enable the cluster backup and restore operator, cluster-backup, by updating the `MultiClusterHub` resource and setting the `cluster-backup` parameter to true. For this, let's use RHACM Search!
-
-In the left navigation menu, Go to *Search*.
-
-Type: `kind`:`MultiClusterHub`
-
-<<insert image>>
-
-Click on the resource, and edit the line where it says: `cluster-backup`: `false`. Insert `cluster-backup`: `true`
-
-<<insert image>>
  
 === 4. Create the DataProtectionApplication
 
-This will connect RHACM to the S3-like storage.
+Now, this will establish the connection between RHACM and the object storage.
 
 [source,bash]
 ----
@@ -82,21 +89,20 @@ apiVersion: oadp.openshift.io/v1alpha1
 kind: DataProtectionApplication
 metadata:
   name: dpa-sample
+  namespace: open-cluster-management-backup
 spec:
   configuration:
     velero:
       defaultPlugins:
       - openshift
       - aws
-    restic:
-      enable: true
   backupLocations:
     - name: default
       velero:
         provider: aws
         default: true
         objectStorage:
-          bucket: acm-backup
+          bucket: acm-backup-${GUID}
           prefix: my-prefix
         config:
           region: us-east-2
@@ -111,9 +117,17 @@ spec:
         config:
           region: us-west-2
           profile: "default"
+EOF
 ----
 
+
 === 5. Create a Backup schedule
+
+Before we proceed, let's pause for a second and quickly recap. So far, we:
+
+* Created an object store bucket in AWS.
+* Enabled the *Hub Cluster Backup & Restore* feature flag in RHACM (via the `MultiClusterHub` CR)
+* Created the artifacts 
 
 With everything all set, let's set up a Backup schedule. Apply:
 
@@ -141,7 +155,7 @@ spec:
 
 With everything all set, we can validate the backup in 2 ways.
 
-=== Validating the Backup - Path a
+=== Validating the Backup - Path A
 
 You might have noticed (or not?) that while enabling the backup feature flag via the `MultiClusterHub` CR, as part of the operator installation, some policies were created automatically in the Governance page. The policies will validate if the installation was properly configured, and if your Backup Schedule is created! Here's a screenshot of how it should look like:
 

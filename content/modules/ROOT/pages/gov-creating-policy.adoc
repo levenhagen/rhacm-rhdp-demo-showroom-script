@@ -80,26 +80,27 @@ On 2.Policy Templates: Click on *Add policy template* and select *Install an Ope
 
 Complete the fields with the following information:
 
-*Operator Policy*:
+Under *Operator Policy*:
 
-* *Name*: install-operator
 * *Installed Namespace*: openshift-gitops-operator
 
-*Subscription*:
+Under *Operator Subscription*:
 
 * *Name*: openshift-gitops-operator
 * *Channel*: latest
-* *StartingCSV*: openshift-gitops-operator.v1.20.1
+* *StartingCSV*: openshift-gitops-operator.v1.21.1
 
 It should resemble something like this:
 
-image:gov-policy-gitops-op.png[GitOps Operator Policy]
+image:gov-policy-gitops-operator.png[GitOps Operator Policy]
 
 For everything other field, leave it as is. Click *Next*.
 
 === 3. Define policy placement 
 
-In *3. Placement*, under label expressions, select: `local-cluster` -> In -> `true`. This means the OpenShift GitOps operator will only be applied to the local-cluster/Hub Cluster.
+In *3. Placement*, select *New placement*, and under label expressions, click on *Add label expression*:
+
+Select: `local-cluster` -> equals any of -> `true`. This means the OpenShift GitOps operator will only be applied to the local-cluster/Hub Cluster.
 
 image::gov-policy-gitops-placement.png[GitOps Policy placement]
 
