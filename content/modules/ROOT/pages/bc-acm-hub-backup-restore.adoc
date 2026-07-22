@@ -127,9 +127,24 @@ Before we proceed, let's pause for a second and quickly recap. So far, we:
 
 * Created an object store bucket in AWS.
 * Enabled the *Hub Cluster Backup & Restore* feature flag in RHACM (via the `MultiClusterHub` CR)
-* Created the artifacts 
+* Created the artifacts (Credentials secret and DataProtectionApplication resources) responsible for connecting RHACM and the backup storage location.
 
-With everything all set, let's set up a Backup schedule. Apply:
+During this process, you may or may not have noticed, that RHACM and the backup operator created a policy that manages the backup functionality.
+Let's check that in the policy view. Access the *Governance* page.
+
+Go to *PolicySets*, and you should find a policySet called `acm-hub-backup`. Click on that policySet, and on the right, access the policies tab.
+
+image::bc-policy-set.png[RHACM Backup PolicySet]
+
+When you click on that policy, it'll will take you to that policy page. Access the *Results* tab.
+
+image::bc-policy-backup-results.png
+
+In the Results tab, you'll be able to see every component that the policy is watching: Some components are validated/compliant ✅, while others are still not compliant ❌ to the policy.
+
+As part of the items that are in compliance, we can find the installation of the backup operator (OADP), the existence of the connection to the storage location, etc. We are still missing just a few components, as we see in the picture above, responsible for what we call the `BackupSchedule`.
+
+With all of that being said and understood, let's proceed and set up a Backup schedule. Apply:
 
 [source, bash]
 ----
@@ -153,17 +168,13 @@ spec:
 
 * *4* Optional: paused is an optional property which can pause the backup schedule. If you set it to true, it pauses the backup schedule, deleting all Velero schedules created by this resource.
 
-With everything all set, we can validate the backup in 2 ways.
-
 === Validating the Backup - Path A
 
-You might have noticed (or not?) that while enabling the backup feature flag via the `MultiClusterHub` CR, as part of the operator installation, some policies were created automatically in the Governance page. The policies will validate if the installation was properly configured, and if your Backup Schedule is created! Here's a screenshot of how it should look like:
-
-<<insert image>>
+With everything all set, the backup policy should now report "No violations ✅". Go ahead and check if that policy is compliant.
 
 === Validating the Backup - Path B
 
-In your lab, you might have received credentials to log in to the AWS Console. There, you can visit the S3 page, and look for the `acm-backup` bucket, and you will be able to see its content.
+In your lab, you might have received credentials to log in to the AWS Console. There, you can visit the AWS S3 page, and look for the `acm-backup-xxxxx` bucket, and you will be able to see its content.
 
 <<insert image from AWS>>
 
